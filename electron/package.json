@@ -1,0 +1,76 @@
+{
+  "name": "snga-desktop",
+  "version": "1.0.0",
+  "description": "SNGA（NGA 客户端）Electron 桌面端",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev-server",
+    "selfcheck": "node scripts/selfcheck.js",
+    "validate": "node scripts/validate-config.js",
+    "prepare-h5": "node scripts/prepare-h5.js",
+    "predist": "node scripts/prepare-h5.js",
+    "pack": "npm run prepare-h5 && electron-builder --dir",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win"
+  },
+  "author": "",
+  "license": "ISC",
+  "build": {
+    "appId": "com.simple.nga.desktop",
+    "productName": "SNGA",
+    "files": [
+      "main.js",
+      "preload.js",
+      "package.json",
+      "devtools/**",
+      "build/icon.png"
+    ],
+    "extraResources": [
+      {
+        "from": "h5-dist",
+        "to": "h5"
+      }
+    ],
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "SNGA",
+      "artifactName": "${productName}-${version}-setup.${ext}"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-portable.${ext}"
+    },
+    "electronDownload": {
+      "mirror": "https://npmmirror.com/mirrors/electron/"
+    }
+  },
+  "devDependencies": {
+    "electron": "^44.4.1",
+    "electron-builder": "^26.15.3"
+  }
+}

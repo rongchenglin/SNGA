@@ -1,0 +1,76 @@
+export type GetWebviewCookieSuccess = {
+	errMsg : string,
+	cookie : string
+}
+
+export type GetWebviewCookieFail = {
+	errMsg : string,
+	errCode : number
+}
+
+export type GetWebviewCookieComplete = {
+	errMsg : string
+}
+
+export type GetWebviewCookieOptions = {
+	/**
+	 * 要读取 cookie 的 URL，建议传完整链接（含协议）
+	 */
+	url : string,
+	/**
+	 * 接口调用成功的回调函数
+	 */
+	success ?: (result : GetWebviewCookieSuccess) => void | null,
+	/**
+	 * 接口调用失败的回调函数
+	 */
+	fail ?: (result : GetWebviewCookieFail) => void | null,
+	/**
+	 * 接口调用结束的回调函数（调用成功、失败都会执行）
+	 */
+	complete ?: (result : GetWebviewCookieComplete) => void | null
+}
+
+export type SetWebviewCookieOptions = {
+	/**
+	 * 要写 cookie 的 URL，建议传完整链接（含协议）
+	 */
+	url : string,
+	/**
+	 * cookie 字符串，格式同 Set-Cookie。
+	 * 删掉某个 cookie：值要给非空占位并带上过期时间（空 value 会被系统按 RFC 6265 拒成 17100005，
+	 * HttpOnly 的 cookie 还必须在属性里带 HttpOnly 才能覆盖），
+	 * 例如 'ngaPassportUid=deleted; Path=/; Domain=.nga.cn; HttpOnly; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
+	 */
+	cookie : string
+}
+
+export interface Uni {
+	/**
+	 * getWebviewCookie()
+	 * @description 读取指定 URL 在系统 Web 组件中的 cookie
+	 * @param {GetWebviewCookieOptions} options
+	 * @return {void}
+	 */
+	getWebviewCookie(options : GetWebviewCookieOptions) : void;
+	/**
+	 * setWebviewCookie()
+	 * @description 向系统 Web 组件写入（或覆盖）指定 URL 的 cookie，退出登录时用来把登录 token 置空
+	 * @param {SetWebviewCookieOptions} options
+	 * @return {void}
+	 */
+	setWebviewCookie(options : SetWebviewCookieOptions) : void;
+	/**
+	 * clearWebviewCookies()
+	 * @description 清空系统 Web 组件里的所有 cookie。configCookie 按 host+path+name 精确覆盖，
+	 * 属性对不上时不会报错、只是静默不生效，所以退出登录时拿它兜底
+	 * @return {void}
+	 */
+	clearWebviewCookies() : void;
+}
+
+export type GetWebviewCookie = (options : GetWebviewCookieOptions) => void
+
+export type SetWebviewCookie = (options : SetWebviewCookieOptions) => void
+
+export type ClearWebviewCookies = () => void

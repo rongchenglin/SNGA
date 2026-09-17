@@ -1,0 +1,74 @@
+import { webview } from '@kit.ArkWeb'
+import { BusinessError } from '@kit.BasicServicesKit'
+
+import {
+	GetWebviewCookie,
+	GetWebviewCookieOptions,
+	GetWebviewCookieSuccess,
+	GetWebviewCookieFail,
+	GetWebviewCookieComplete,
+	SetWebviewCookie,
+	SetWebviewCookieOptions,
+	ClearWebviewCookies
+} from '../interface.uts'
+
+export {
+	GetWebviewCookie,
+	GetWebviewCookieOptions,
+	GetWebviewCookieSuccess,
+	GetWebviewCookieFail,
+	GetWebviewCookieComplete,
+	SetWebviewCookie,
+	SetWebviewCookieOptions,
+	ClearWebviewCookies
+}
+
+export const getWebviewCookie : GetWebviewCookie = function (options : GetWebviewCookieOptions) {
+	webview.WebCookieManager.fetchCookie(options.url)
+		.then((cookie : string) => {
+			const result : GetWebviewCookieSuccess = {
+				errMsg: 'getWebviewCookie:ok',
+				cookie: cookie
+			}
+			options.success?.(result)
+			const completeResult : GetWebviewCookieComplete = {
+				errMsg: result.errMsg
+			}
+			options.complete?.(completeResult)
+		})
+		.catch((error : BusinessError) => {
+			const result : GetWebviewCookieFail = {
+				errMsg: `getWebviewCookie:fail ${error.message}`,
+				errCode: error.code
+			}
+			options.fail?.(result)
+			const completeResult : GetWebviewCookieComplete = {
+				errMsg: result.errMsg
+			}
+			options.complete?.(completeResult)
+		})
+}
+
+// 退出登录时把登录 token 置空：鸿蒙没有 plus，写 cookie 只能走 WebCookieManager.configCookie
+export const setWebviewCookie : SetWebviewCookie = function (options : SetWebviewCookieOptions) {
+	webview.WebCookieManager.configCookie(options.url, options.cookie)
+		.then(() => {
+			console.log('setWebviewCookie:ok')
+		})
+		.catch((error : BusinessError) => {
+			console.error(`setWebviewCookie:fail ${error.message}`)
+		})
+}
+
+// 兜底：一次清掉 Web 组件里的所有 cookie。走删除接口，不做任何 Set-Cookie 格式解析，
+// 不依赖 host/path/name 是否和原 cookie 对得上。
+// 注意：ArkTS 不允许给 catch 变量标类型，这里索性不写 try/catch，由调用方（auth.js）兜异常
+export const clearWebviewCookies : ClearWebviewCookies = function () {
+	// incognito 必须显式传 false：文档说明传 undefined/null 时不清除任何 cookie
+	webview.WebCookieManager.clearAllCookiesSync(false)
+	// cookie 默认每 30s 才落盘一次，强制保存，避免刚清完就被杀进程、旧 token 又被读回来
+	webview.WebCookieManager.saveCookieAsync()
+		.catch((error : BusinessError) => {
+			console.error(`clearWebviewCookies: saveCookieAsync fail ${error.message}`)
+		})
+}

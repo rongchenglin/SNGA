@@ -1,0 +1,86 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				// 首页不要原生导航栏（清空标题仍会占一条），内容直接顶到状态栏下面
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/search/index",
+			"style": {
+				"navigationBarTitleText": "搜索"
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationBarBackgroundColor": "#ffffff"
+			}
+		},
+		{
+			"path": "pages/login/webview",
+			"style": {
+				"navigationBarTitleText": "网页登录",
+				"navigationBarBackgroundColor": "#ffffff"
+			}
+		},
+		{
+			"path": "pages/topic/list",
+			"style": {
+				"navigationBarTitleText": "板块"
+			}
+		},
+		{
+			"path": "pages/post/detail",
+			"style": {
+				"navigationBarTitleText": "帖子"
+			}
+		},
+		{
+			"path": "pages/user/profile",
+			"style": {
+				"navigationBarTitleText": "用户详情"
+			}
+		},
+		{
+			"path": "pages/user/activity",
+			"style": {
+				"navigationBarTitleText": "用户主题"
+			}
+		},
+		{
+			"path": "pages/user/favorites",
+			"style": {
+				"navigationBarTitleText": "我的收藏"
+			}
+		},
+		{
+			"path": "pages/user/notices",
+			"style": {
+				"navigationBarTitleText": "回复提醒"
+			}
+		},
+		{
+			"path": "pages/user/url-reader",
+			"style": {
+				"navigationBarTitleText": "按链接打开"
+			}
+		},
+		{
+			"path": "pages/user/history",
+			"style": {
+				"navigationBarTitleText": "阅读历史"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "NGA",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"uniIdRouter": {}
+}

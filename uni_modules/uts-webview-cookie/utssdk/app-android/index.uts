@@ -1,0 +1,73 @@
+import CookieManager from 'android.webkit.CookieManager'
+import Exception from 'java.lang.Exception'
+
+import {
+	GetWebviewCookie,
+	GetWebviewCookieOptions,
+	GetWebviewCookieSuccess,
+	GetWebviewCookieFail,
+	GetWebviewCookieComplete,
+	SetWebviewCookie,
+	SetWebviewCookieOptions,
+	ClearWebviewCookies
+} from '../interface.uts'
+
+export {
+	GetWebviewCookie,
+	GetWebviewCookieOptions,
+	GetWebviewCookieSuccess,
+	GetWebviewCookieFail,
+	GetWebviewCookieComplete,
+	SetWebviewCookie,
+	SetWebviewCookieOptions,
+	ClearWebviewCookies
+}
+
+// 安卓没有像鸿蒙 WebCookieManager 那样的独立组件，cookie 存在系统 WebView 的 CookieManager 里，
+// 与 <web-view> 组件共用同一份：登录页的 cookie 从这里能直接读到，包括 HttpOnly 的。
+export const getWebviewCookie : GetWebviewCookie = function (options : GetWebviewCookieOptions) {
+	try {
+		const cookie = CookieManager.getInstance().getCookie(options.url) ?? ''
+		const result : GetWebviewCookieSuccess = {
+			errMsg: 'getWebviewCookie:ok',
+			cookie: cookie
+		}
+		options.success?.(result)
+		const completeResult : GetWebviewCookieComplete = {
+			errMsg: result.errMsg
+		}
+		options.complete?.(completeResult)
+	} catch (error : Exception) {
+		const result : GetWebviewCookieFail = {
+			errMsg: `getWebviewCookie:fail ${error.message}`,
+			errCode: 0
+		}
+		options.fail?.(result)
+		const completeResult : GetWebviewCookieComplete = {
+			errMsg: result.errMsg
+		}
+		options.complete?.(completeResult)
+	}
+}
+
+// 退出登录时把登录 token 置空：CookieManager.setCookie 会覆盖同名 cookie，
+// 值留空 + 过期时间就等同于删除；flush 落盘，避免重启后又从磁盘读回旧 token
+export const setWebviewCookie : SetWebviewCookie = function (options : SetWebviewCookieOptions) {
+	try {
+		CookieManager.getInstance().setCookie(options.url, options.cookie)
+		CookieManager.getInstance().flush()
+	} catch (error : Exception) {
+		console.error(`setWebviewCookie:fail ${error.message}`)
+	}
+}
+
+// 兜底：一次清掉 WebView 的所有 cookie（对应鸿蒙的 clearAllCookiesSync），
+// flush 落盘，避免重启后又从磁盘读回旧 token
+export const clearWebviewCookies : ClearWebviewCookies = function () {
+	try {
+		CookieManager.getInstance().removeAllCookies(null)
+		CookieManager.getInstance().flush()
+	} catch (error : Exception) {
+		console.error(`clearWebviewCookies:fail ${error.message}`)
+	}
+}

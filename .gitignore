@@ -1,0 +1,17 @@
+unpackage/
+node_modules/
+.DS_Store
+.hbuilderx/
+
+# Electron 桌面端：安装包产物、打包前的 H5 暂存目录、自检输出、运行日志
+electron/release/
+electron/h5-dist/
+electron/selfcheck_out.log
+electron/selfcheck_err.log
+electron/selfcheck.png
+electron/start.log
+electron/start_err.log
+
+# 本地临时文件
+_tmp_script.txt
+.tmp_wiki/

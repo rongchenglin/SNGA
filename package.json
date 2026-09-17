@@ -1,0 +1,22 @@
+{
+  "name": "SNGA",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "desktop": "npm --prefix electron start",
+    "desktop:dev": "npm --prefix electron run dev",
+    "desktop:install": "npm --prefix electron install",
+    "desktop:selfcheck": "npm --prefix electron run selfcheck",
+    "desktop:prepare": "npm --prefix electron run prepare-h5",
+    "desktop:pack": "npm --prefix electron run pack",
+    "desktop:dist": "npm --prefix electron run dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "crypto-js": "^4.1.1"
+  }
+}

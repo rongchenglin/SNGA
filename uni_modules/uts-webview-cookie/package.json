@@ -1,0 +1,46 @@
+{
+	"id": "uts-webview-cookie",
+	"displayName": "webview cookie 读取",
+	"version": "0.3.0",
+	"description": "读写指定 URL 的 webview cookie（鸿蒙走 WebCookieManager，安卓走 android.webkit.CookieManager）",
+	"keywords": [
+		"鸿蒙",
+		"harmony",
+		"android",
+		"webview",
+		"cookie"
+	],
+	"uni_modules": {
+		"uni-ext-api": {
+			"uni": {
+				"getWebviewCookie": {
+					"name": "getWebviewCookie",
+					"app": {
+						"js": false,
+						"kotlin": true,
+						"swift": false,
+						"arkts": true
+					}
+				},
+				"setWebviewCookie": {
+					"name": "setWebviewCookie",
+					"app": {
+						"js": false,
+						"kotlin": true,
+						"swift": false,
+						"arkts": true
+					}
+				},
+				"clearWebviewCookies": {
+					"name": "clearWebviewCookies",
+					"app": {
+						"js": false,
+						"kotlin": true,
+						"swift": false,
+						"arkts": true
+					}
+				}
+			}
+		}
+	}
+}
